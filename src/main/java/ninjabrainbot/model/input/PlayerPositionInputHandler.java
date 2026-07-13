@@ -18,10 +18,13 @@ import ninjabrainbot.model.datastate.common.ILimitedPlayerPosition;
 import ninjabrainbot.model.datastate.common.IPlayerPositionInputSource;
 import ninjabrainbot.model.datastate.endereye.IEnderEyeThrow;
 import ninjabrainbot.model.datastate.endereye.IEnderEyeThrowFactory;
-
+import ninjabrainbot.model.datastate.stronghold.ChunkPrediction; // new import for autolock
+import ninjabrainbot.model.datastate.calculator.ICalculatorResult; // new import for autolock
 /**
  * Listens to a stream of player position inputs and decides if/how the inputs should affect the data state.
  */
+
+
 public class PlayerPositionInputHandler implements IDisposable {
 
 	private final IDataState dataState;
@@ -51,9 +54,13 @@ public class PlayerPositionInputHandler implements IDisposable {
 	}
 
 	private IAction getActionForInputtedPlayerPosition(IDetailedPlayerPosition playerPosition) {
-		if (dataState.locked().get())
+		if (dataState.locked().get()) 
 			return null;
 
+		if (preferences.autoLock.get() && predictionIsCertain()) // Surely this is how to write it
+   					return null;
+			
+		
 		if (dataState.allAdvancementsDataState().allAdvancementsModeEnabled().get())
 			return new TryAddAllAdvancementsStructureAction(dataState, playerPosition, preferences);
 
@@ -119,5 +126,15 @@ public class PlayerPositionInputHandler implements IDisposable {
 	public void dispose() {
 		disposeHandler.dispose();
 	}
+
+	private boolean predictionIsCertain() {
+    	ICalculatorResult result = dataState.calculatorResult().get();
+    	if (result == null || !result.success())
+        	return false;
+
+    	ChunkPrediction prediction = result.getBestPrediction();
+    	return prediction != null && prediction.chunk.weight > 0.9995;
+}
+
 
 }
