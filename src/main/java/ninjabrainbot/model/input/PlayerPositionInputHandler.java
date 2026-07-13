@@ -20,6 +20,8 @@ import ninjabrainbot.model.datastate.endereye.IEnderEyeThrow;
 import ninjabrainbot.model.datastate.endereye.IEnderEyeThrowFactory;
 import ninjabrainbot.model.datastate.stronghold.ChunkPrediction; // new import for autolock
 import ninjabrainbot.model.datastate.calculator.ICalculatorResult; // new import for autolock
+import ninjabrainbot.model.environmentstate.StandardDeviationSettings;
+
 /**
  * Listens to a stream of player position inputs and decides if/how the inputs should affect the data state.
  */
@@ -57,8 +59,8 @@ public class PlayerPositionInputHandler implements IDisposable {
 		if (dataState.locked().get()) 
 			return null;
 
-		if (preferences.autoLock.get() && predictionIsCertain()) // Surely this is how to write it
-   					return null;
+		if (preferences.autoLock.get() && predictionIsCertain())
+   			return null;
 			
 		
 		if (dataState.allAdvancementsDataState().allAdvancementsModeEnabled().get())
@@ -131,10 +133,35 @@ public class PlayerPositionInputHandler implements IDisposable {
     	ICalculatorResult result = dataState.calculatorResult().get();
     	if (result == null || !result.success())
         	return false;
+		if(mismeasureDetected())
+			return false;
 
     	ChunkPrediction prediction = result.getBestPrediction();
     	return prediction != null && prediction.chunk.weight > 0.9995;
 }
+	private boolean mismeasureDetected() {
+    ICalculatorResult result = dataState.calculatorResult().get();
+    if (result == null || !result.success())
+        return false;
 
+    ChunkPrediction bestPrediction = result.getBestPrediction();
+    if (bestPrediction == null)
+        return false;
 
+    StandardDeviationSettings sigmaSettings = new StandardDeviationSettings(preferences.sigma.get(), preferences.sigmaAlt.get(), preferences.sigmaManual.get(), preferences.sigmaBoat.get());
+
+    double likelihood = 1.0;
+    double expectedLikelihood = 1.0;
+
+    for (IEnderEyeThrow t : dataState.getThrowList()) {
+        double error = bestPrediction.getAngleError(t);
+        double sigma = t.getStandardDeviation(sigmaSettings);
+
+        double normalized = error / sigma;
+        likelihood *= Math.exp(-0.5 * normalized * normalized);
+        expectedLikelihood *= 1.0 / Math.sqrt(2.0);
+    }
+
+    return (likelihood / expectedLikelihood) < 0.01;
+}
 }
