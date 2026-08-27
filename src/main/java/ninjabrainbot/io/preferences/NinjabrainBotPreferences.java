@@ -32,6 +32,7 @@ public class NinjabrainBotPreferences {
 	public final HotkeyPreference hotkeyAltStd;
 	public final HotkeyPreference hotkeyLock;
 	public final HotkeyPreference hotkeyToggleAllAdvancementsMode;
+	public final HotkeyPreference hotkeyAutoLock;
 	public final FloatPreference sensitivityManual;
 	public final FloatPreference sigma;
 	public final FloatPreference sigmaAlt;
@@ -69,6 +70,7 @@ public class NinjabrainBotPreferences {
 	public final BooleanPreference informationCombinedCertaintyEnabled;
 	public final BooleanPreference informationPortalLinkingEnabled;
 	public final BooleanPreference autoLock;
+	public final BooleanPreference autoLockEnabled;
 	public final StringPreference customThemesString;
 	public final StringPreference customThemesNames;
 	public final StringPreference language;
@@ -84,8 +86,8 @@ public class NinjabrainBotPreferences {
 	public NinjabrainBotPreferences(IPreferenceSource source) {
 		this.source = source;
 		// Integer
-		windowX = new IntPreference("window_x", 100, source);
-		windowY = new IntPreference("window_y", 100, source);
+		windowX = new IntPreference("window_x", 500, source);
+		windowY = new IntPreference("window_y", 500, source);
 		theme = new IntPreference("theme", 1, source);
 		settingsVersion = new IntPreference("settings_version", 0, source);
 		// Hotkey
@@ -97,6 +99,7 @@ public class NinjabrainBotPreferences {
 		hotkeyMinimize = new HotkeyPreference("hotkey_minimize", source);
 		hotkeyAltStd = new HotkeyPreference("hotkey_alt_std", source);
 		hotkeyLock = new HotkeyPreference("hotkey_lock", source);
+		hotkeyAutoLock = new HotkeyPreference("hotkey_autolock", source);
 		hotkeyBoat = new HotkeyPreference("hotkey_boat", source);
 		hotkeyMod360 = new HotkeyPreference("hotkey_mod_360", source);
 		hotkeyToggleAllAdvancementsMode = new HotkeyPreference("hotkey_toggle_aa_mode", source);
@@ -140,6 +143,8 @@ public class NinjabrainBotPreferences {
 		informationCombinedCertaintyEnabled = new BooleanPreference("combined_offset_information_enabled", true, source);
 		informationPortalLinkingEnabled = new BooleanPreference("portal_linking_warning_enabled", true, source);
 		autoLock = new BooleanPreference("auto_lock", true, source);
+		autoLockEnabled = new BooleanPreference("auto_lock_enabled", true, source);
+
 		
 		
 		// String
