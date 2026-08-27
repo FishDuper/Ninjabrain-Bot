@@ -59,7 +59,7 @@ public class PlayerPositionInputHandler implements IDisposable {
 		if (dataState.locked().get()) 
 			return null;
 
-		if (preferences.autoLock.get() && predictionIsCertain())
+		if (preferences.autoLock.get() && preferences.autoLockEnabled.get() && predictionIsCertain())
    			return null;
 			
 		
