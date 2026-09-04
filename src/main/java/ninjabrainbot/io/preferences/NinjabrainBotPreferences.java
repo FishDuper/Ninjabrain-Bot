@@ -41,7 +41,7 @@ public class NinjabrainBotPreferences {
 	public final FloatPreference resolutionHeight;
 	public final FloatPreference boatErrorLimit;
 	public final FloatPreference overlayHideDelay;
-	public final FloatPreference AutoResetDelay; 
+	public final IntPreference AutoResetDelay; 
 	public final DoublePreference sensitivityAutomatic;
 	public final DoublePreference customAdjustment;
 	public final DoublePreference crosshairCorrection;
@@ -112,7 +112,7 @@ public class NinjabrainBotPreferences {
 		resolutionHeight = new FloatPreference("resolution_height", 16384, 1f, 16384f, source);
 		boatErrorLimit = new FloatPreference("boat_error", 0.03f, 0f, 0.7f, source);
 		overlayHideDelay = new FloatPreference("overlay_hide_delay", 30f, 1f, 3600f, source);
-		AutoResetDelay = new FloatPreference("reset_delay", 15.0f, 1f, 3600f, source);
+		AutoResetDelay = new IntPreference("reset_delay", 15, 1, 3600, source);
 		// Double
 		sensitivityAutomatic = new DoublePreference("sensitivity", 0.012727597f, 0f, 1f, source);
 		customAdjustment = new DoublePreference("custom_adjustment", 0.01, 0f, 1f, source);
