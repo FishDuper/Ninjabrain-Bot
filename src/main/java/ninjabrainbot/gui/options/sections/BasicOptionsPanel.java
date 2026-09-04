@@ -12,6 +12,7 @@ import ninjabrainbot.gui.components.layout.StackPanel;
 import ninjabrainbot.gui.components.preferences.CheckboxPanel;
 import ninjabrainbot.gui.components.preferences.RadioButtonPanel;
 import ninjabrainbot.gui.components.preferences.FloatPreferencePanel;
+import ninjabrainbot.gui.components.preferences.IntPreferencePanel;
 import ninjabrainbot.gui.frames.OptionsFrame;
 import ninjabrainbot.gui.style.StyleManager;
 import ninjabrainbot.io.mcinstance.IActiveInstanceProvider;
@@ -38,7 +39,7 @@ public class BasicOptionsPanel extends JPanel implements IDisposable {
         column1.add(new CheckboxPanel(styleManager, I18n.get("settings.show_nether_coordinates"), preferences.showNetherCoords));
         column1.add(new CheckboxPanel(styleManager, I18n.get("settings.auto_reset"), preferences.autoReset));
         // Auto-reset delay input box
-        FloatPreferencePanel autoResetDelayPanel = new FloatPreferencePanel(styleManager, I18n.get("settings.reset_delay"), preferences.AutoResetDelay);
+        IntPreferencePanel autoResetDelayPanel = new IntPreferencePanel(styleManager, I18n.get("settings.reset_delay"), preferences.AutoResetDelay);
         autoResetDelayPanel.setEnabled(preferences.autoReset.get());
         column1.add(autoResetDelayPanel);
 
